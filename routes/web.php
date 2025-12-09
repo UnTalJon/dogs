@@ -1,12 +1,15 @@
 <?php
 
+use App\Livewire\DogDetail;
+use App\Livewire\Favorites;
+use App\Livewire\Feed;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Livewire\Volt\Volt;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::get('/', Feed::class)->name('home');
+Route::get('/favorites', Favorites::class)->name('favorites');
+Route::get('/dogs/{id}', DogDetail::class)->name('dog-detail');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
@@ -23,7 +26,7 @@ Route::middleware(['auth'])->group(function () {
         ->middleware(
             when(
                 Features::canManageTwoFactorAuthentication()
-                    && Features::optionEnabled(Features::twoFactorAuthentication(), 'confirmPassword'),
+                && Features::optionEnabled(Features::twoFactorAuthentication(), 'confirmPassword'),
                 ['password.confirm'],
                 [],
             ),
