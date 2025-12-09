@@ -22,7 +22,7 @@ class DogFactory extends Factory
             'age' => $this->faker->numberBetween($minAge, $maxAge),
             'size' => $this->faker->numberBetween($minSize, $maxSize),
             'description' => $this->faker->text(),
-            'photo_url' => $this->faker->url(),
+            'photo_url' => null,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];
