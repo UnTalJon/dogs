@@ -204,10 +204,33 @@
                 </address>
             </section>
 
-            <flux:button @class('adopt-btn') variant="primary">
-                Quiero Adoptarlo
-            </flux:button>
+            <flux:modal.trigger name="adoption-form">
+                <flux:button @class('adopt-btn') variant="primary">
+                    Quiero Adoptarlo
+                </flux:button>
+            </flux:modal.trigger>
         </div>
     </article>
 
+    <flux:modal name="adoption-form" flyout variant="floating" class="md:w-lg">
+        <div class="space-y-6">
+            <flux:heading size="lg">Formulario de adopción</flux:heading>
+
+            <flux:subheading>
+                Por favor, completa el siguiente formulario para iniciar el proceso de adopción.
+            </flux:subheading>
+
+
+            <flux:input label="Nombre" placeholder="Tú nombre"/>
+            <flux:input label="Email" placeholder="correo@ejemplo.com"/>
+            <flux:input label="Teléfono" placeholder="555 555 5555"/>
+            <flux:input label="Cuidad" placeholder="Xalapa"/>
+            <flux:textarea label="Mensaje" placeholder="Adoptaré un amigo"/>
+
+            <flux:modal.close>
+
+                <flux:button style="width: 100%;" variant="primary">Postularse</flux:button>
+            </flux:modal.close>
+        </div>
+    </flux:modal>
 </div>
