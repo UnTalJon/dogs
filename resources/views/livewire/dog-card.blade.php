@@ -73,17 +73,13 @@
         font-weight: 500;
     }
 
-    .card-description {
-        font-size: 0.875rem;
-        line-height: 1.5;
-        margin-bottom: 1.5rem;
-        max-lines: 5;
-        height: 1.5rem;
-    }
-
     .adopt-btn {
         width: 100%;
         padding: 1rem;
+    }
+
+    .favorite-btn.is-favorite {
+        color: #ef4444;
     }
 </style>
 <div class="card">
@@ -103,8 +99,67 @@
             <span class="tag">peludo</span>
         </div>
 
-        <flux:button @class('adopt-btn')
-                     variant="primary"
-                     href="{{ route('dog-detail', ['id' => $dog['id']]) }}">Detalles</flux:button>
+        <div x-data="{
+                    updateKey: 0,
+                    get favoriteIds() {
+                        const key = this.updateKey; // Access for reactivity
+                        try {
+                            const stored = localStorage.getItem('favoriteDogs');
+                            if (!stored) return [];
+                            const parsed = JSON.parse(stored);
+                            return Array.isArray(parsed) ? parsed : [];
+                        } catch (e) {
+                            return [];
+                        }
+                    },
+                    get isFavorite() {
+                        const favorites = this.favoriteIds;
+                        return Array.isArray(favorites) && favorites.includes({{ $dog['id'] }});
+                    },
+                    toggleFavorite() {
+                        const dogId = {{ $dog['id'] }};
+                        let favorites = [];
+
+                        try {
+                            const stored = localStorage.getItem('favoriteDogs');
+                            if (stored) {
+                                const parsed = JSON.parse(stored);
+                                favorites = Array.isArray(parsed) ? parsed : [];
+                            }
+                        } catch (e) {
+                            favorites = [];
+                        }
+
+                        if (favorites.includes(dogId)) {
+                            favorites = favorites.filter(id => id !== dogId);
+                        } else {
+                            favorites.push(dogId);
+                        }
+
+                        localStorage.setItem('favoriteDogs', JSON.stringify(favorites));
+                        this.updateKey++;
+                        window.dispatchEvent(new CustomEvent('favorites-changed'));
+                    },
+                    init() {
+                        window.addEventListener('favorites-changed', () => {
+                            this.updateKey++;
+                        });
+                    }
+                }">
+            <flux:button.group>
+                <flux:button @class('adopt-btn')
+                             variant="primary"
+                             href="{{ route('dog-detail', ['id' => $dog['id']]) }}">Detalles
+                </flux:button>
+                <flux:button
+                    class="favorite-btn"
+                    data-dog-id="{{ $dog['id'] }}"
+                    variant="filled"
+                    icon="heart"
+                    x-bind:class="{ 'is-favorite': isFavorite }"
+                    @click="toggleFavorite()">
+                </flux:button>
+            </flux:button.group>
+        </div>
     </div>
 </div>
