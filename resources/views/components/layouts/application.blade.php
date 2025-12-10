@@ -8,7 +8,7 @@
     @livewireStyles
     @vite('resources/css/app.css')
 
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">s
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <style>
         * {
             margin: 0;
@@ -88,6 +88,6 @@
 </div>
 
 @livewireScripts
-@fluxScript
+@fluxScripts
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 </body>
